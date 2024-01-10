@@ -19,7 +19,9 @@
 <script src="<?= base_url(); ?>assets/plugins/datepicker/bootstrap-datepicker.min.js"></script>
 <link rel="stylesheet" href="<?= base_url()?>leaflet/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 <script src="<?= base_url()?>leaflet/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<link rel="stylesheet" href="<?= base_url()?>leaflet-routing/dist/leaflet-routing-machine.css" />
+<link rel="stylesheet" href="<?= base_url()?>leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+<script src="<?= base_url()?>leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
 <script type="text/javascript">
    <?php if ($this->session->flashdata('successmessage')) { ?>
       const Toast = Swal.mixin({toast: true,position: 'top',showConfirmButton: false,timer: 5000});

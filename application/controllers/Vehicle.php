@@ -32,6 +32,8 @@ class Vehicle extends CI_Controller {
 		$this->form_validation->set_rules('v_manufactured_by','Manufactured By','required|trim');
 		$this->form_validation->set_rules('v_type','Vehicle Type','required|trim');
 		$this->form_validation->set_rules('v_color','Vehicle Color','required|trim');
+		$this->form_validation->set_rules('latlong_start','required|trim');
+		$this->form_validation->set_rules('latlong_end','required|trim');
 		$testxss = xssclean($_POST);
 		if($this->form_validation->run()==TRUE && $testxss){
 			$response = $this->vehicle_model->add_vehicle($this->input->post());
@@ -41,7 +43,7 @@ class Vehicle extends CI_Controller {
 			}
 		} else	{
 			$errormsg = validation_errors();
-			if(!$testxs) {
+			if(!$testxss) {
 				$errormsg = 'Error! Your input are not allowed.Please try again';
 			}
 			$this->session->set_flashdata('warningmessage',$errormsg);
