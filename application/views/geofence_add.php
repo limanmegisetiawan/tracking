@@ -16,95 +16,132 @@
       ?>
 
 <div class="card-header">
-<div style="display: none" id="color-palette"></div>
-<div class="container-fluid">
+    <div style="display: none" id="color-palette"></div>
+    <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark"><?php echo (isset($vehicledetails))?'Edit Vehicle':'Tambah Geofence' ?>
-            </h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="<?= base_url(); ?>/dashboard">Data Geofence</a></li>
-              <li class="breadcrumb-item active"><?php echo (isset($vehicledetails))?'Edit vehicle':'Tambah Geofence' ?></li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark"><?php echo (isset($vehicledetails))?'Edit Vehicle':'Tracking Bus' ?>
+                </h1>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">
+                        <a href="<?= base_url(); ?>/dashboard">Tracking</a>
+                    </li>
+                    <li class="breadcrumb-item active"><?php echo (isset($vehicledetails))?'Edit vehicle':'Tracking' ?></li>
+                </ol>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
 
 </div>
 <section class="content">
-      <div class="container-fluid">
-      <form method="post" class="card" action="<?php echo base_url('Geofence/addgeo'); ?>">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-sm-6 col-md-3">
-                <div class="form-group">
-                    <label class="form-label">Nama Koridor<span class="form-required">*</span></label>
-                    <input type="text" class="form-control" id="geo_nama" name="geo_nama" placeholder="Nama Koridor">
+    <div class="container-fluid">
+        <form id="track" method="post">
+
+            <div class="card-body">
+                <div class="row col-md-12">
+
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <select
+                                id="t_vechicle"
+                                required="true"
+                                class="form-control selectized"
+                                name="t_vechicle">
+                                <option value="">Pilih Bus</option>
+                                <?php  foreach ($vechiclelist as $key => $vechiclelists) { ?>
+                                <option value="<?php echo output($vechiclelists['v_id']) ?>"><?php echo output($vechiclelists['v_name']).' - '. output($vechiclelists['v_registration_no']); ?></option>
+                                <?php  } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Load</button>
+                        </div>
+                    </div>
+
                 </div>
+
+                <div id="map" style="width: 900px; height: 400px;"></div>
+                <script>
+                    const map = L
+                        .map('map')
+                        .setView([
+                            -6.931268, 107.615322
+                        ], 13);
+
+                    L
+                        .tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> con' +
+                                    'tributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA<' +
+                                    '/a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                            maxZoom: 20,
+                            id: 'mapbox/streets-v11',
+                            tileSize: 512,
+                            zoomOffset: -1
+                        })
+                        .addTo(map);
+
+                    // Variabel untuk menyimpan marker
+                    var markers = [];
+                    // Inisialisasi objek routing
+                    var control = L
+                        .Routing
+                        .control({routeWhileDragging: true})
+                        .addTo(map);
+
+                    // Variabel untuk menyimpan koordinat klik pertama dan kedua
+                    var firstClickLatLng = null;
+
+                    // Inisialisasi objek routing
+
+                    function onMapClick(e) {
+                        if (markers.length < 2) {
+                            var marker = L
+                                .marker(e.latlng)
+                                .addTo(map);
+                            markers.push(marker);
+
+                            if (markers.length === 1) {
+                                // Jika ini klik pertama, simpan koordinatnya dan tambahkan sebagai titik awal
+                                // pada routing
+                                firstClickLatLng = e.latlng;
+
+                                control.spliceWaypoints(0, 1, e.latlng);
+                                marker
+                                    .bindPopup("Lokasi awal: " + e.latlng.toString())
+                                    .openPopup();
+                                document
+                                    .getElementById('latlong_start')
+                                    .value = firstClickLatLng.lat + ', ' + firstClickLatLng.lng;
+
+                            } else {
+                                // Jika ini klik kedua, simpan koordinatnya dan tambahkan sebagai titik akhir
+                                // pada routing
+                                var secondClickLatLng = e.latlng;
+
+                                control.spliceWaypoints(control.getWaypoints().length - 1, 1, e.latlng);
+                                marker
+                                    .bindPopup("Lokasi akhir: " + e.latlng.toString())
+                                    .openPopup();
+                                document
+                                    .getElementById('latlong_end')
+                                    .value = secondClickLatLng.lat + ', ' + secondClickLatLng.lng;
+
+                            }
+                        }
+                    }
+
+                    map.on('click', onMapClick);
+                </script>
             </div>
+        </form>
 
-            <div class="col-sm-6 col-md-4">
-                <div class="form-group">
-                    <label for="exampleFormControlInput1">Lokasi awal</label>
-                    <input type="text" class="form-control" id="latlong_start" name="geo_latlong_start">
-                </div>
-            </div>
-
-            <div class="col-sm-6 col-md-4">
-                <label for="exampleFormControlInput1">Lokasi akhir</label>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="latlong_end" name="geo_latlong_end">
-                </div>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-
-
-        <div id="map" style="width: 900px; height: 400px;"></div>
-        <script>
-    const map = L.map('map').setView([-6.931268, 107.615322], 13);
-
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        maxZoom: 20,
-        id: 'mapbox/streets-v11',
-        tileSize: 512,
-        zoomOffset: -1,
-    }).addTo(map);
-
-    // Variabel untuk menyimpan marker
-    var markers = [];
-
-    // Variabel untuk menyimpan koordinat klik pertama dan kedua
-    var firstClickLatLng = null;
-
-    // Buat fungsi popup saat map diklik
-    function onMapClick(e) {
-        if (markers.length < 2) {
-            // Jika jumlah marker kurang dari 2, tambahkan marker
-            var marker = L.marker(e.latlng).addTo(map);
-            markers.push(marker);
-            if (!firstClickLatLng) {
-                // Jika ini klik pertama, simpan koordinatnya
-                firstClickLatLng = e.latlng;
-                marker.bindPopup("Lokasi awal: " + firstClickLatLng.toString()).openPopup();
-                document.getElementById('latlong_start').value = firstClickLatLng.lat + ', ' + firstClickLatLng.lng;
-            } else {
-                // Jika ini klik kedua, simpan koordinatnya dan reset klik pertama
-                var secondClickLatLng = e.latlng;
-                marker.bindPopup("Lokasi akhir: " + secondClickLatLng.toString()).openPopup();
-                document.getElementById('latlong_end').value = secondClickLatLng.lat + ', ' + secondClickLatLng.lng;
-                firstClickLatLng = null;
-            }
-        }
-    }
-
-    map.on('click', onMapClick);
-</script>
     </div>
-</form>
-
-             </div>
-    </section>
+</section>

@@ -28,12 +28,12 @@
                   <thead>
                      <tr>
                         <th class="w-1">S.No</th>
-                        <th>Name</th>
-                        <th>Mobile</th>
-                        <th>License No</th>
-                        <th>License Exp Date</th>
-                        <th>Date of Joining</th>
-                        <th>Is Active</th>
+                        <th>Nama Driver</th>
+                        <th>No Telepon</th>
+                        <th>No SIM</th>
+                        <th>SIM Expired</th>
+                        <th>Tanggal Bergabung</th>
+                        <th>Status</th>
                         <?php if(userpermission('lr_drivers_list_edit')) { ?>
                         <th>Action</th>
                         <?php } ?>

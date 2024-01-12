@@ -6,11 +6,11 @@ class Dashboard extends CI_Controller {
 	 function __construct()
      {
           parent::__construct();
-          $this->load->database();
-          $this->load->helper('url');
-          $this->load->library('session');
-          $this->load->model('dashboard_model');
-          $this->load->model('geofence_model');
+                            $this->load->database();
+                            $this->load->helper('url');
+                            $this->load->library('session');
+                            $this->load->model('dashboard_model');
+                            $this->load->model('geofence_model');
      }
 
 	public function index()

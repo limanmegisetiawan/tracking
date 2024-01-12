@@ -2,14 +2,14 @@
    <div class="container-fluid">
       <div class="row mb-2">
          <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Customer Info
+            <h1 class="m-0 text-dark">Data List Siswa
             </h1>
          </div>
          <!-- /.col -->
          <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
                <li class="breadcrumb-item"><a href="<?= base_url(); ?>/dashboard">Dashboard</a></li>
-               <li class="breadcrumb-item active">Customer Info</li>
+               <li class="breadcrumb-item active">List Siswa</li>
             </ol>
          </div>
       </div>
@@ -24,10 +24,10 @@
                   <thead>
                      <tr>
                         <th class="w-1">S.No</th>
-                        <th>Name</th>
-                        <th>Mobile</th>
+                        <th>Nama</th>
+                        <th>No Telepon</th>
                         <th>Email</th>
-                        <th>Address</th>
+                        <th>Alamat</th>
                         <th>Status</th>
                         <?php if(userpermission('lr_cust_edit')) { ?>
                         <th>Action</th>

@@ -7,7 +7,7 @@
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="<?= base_url(); ?>/dashboard">Vehicle</a></li>
+              <li class="breadcrumb-item"><a href="<?= base_url(); ?>/dashboard">Data Driver</a></li>
               <li class="breadcrumb-item active"><?php echo (isset($driverdetails))?'Edit driver':'Tambah Driver' ?></li>
             </ol>
           </div><!-- /.col -->
@@ -25,68 +25,57 @@
                    <input type="hidden" name="d_id" id="d_id" value="<?php echo (isset($driverdetails)) ? $driverdetails[0]['d_id']:'' ?>" >
 
                     <div class="col-sm-6 col-md-3">
-                        <label class="form-label">Driver Name<span class="form-required">*</span></label>
+                        <label class="form-label">Nama Driver<span class="form-required">*</span></label>
                       <div class="form-group">
-                        <input type="text" name="d_name" id="d_name" class="form-control" placeholder="Driver Name" value="<?php echo (isset($driverdetails)) ? $driverdetails[0]['d_name']:'' ?>" >
-                      </div>
-
-
-                      <div class="form-group">
-                        <label for="d_group" class="form-label">Nama Driver</label>
-                        <select id="d_group" name="d_group" class="form-control " required="">
-                          <option value="">Select Nama Driver</option> 
-                          <?php if(!empty($d_group)) { foreach($d_group as $d_groupdata) { ?>
-                          <option <?= (isset($vehicledetails[0]['d_group']) && $vehicledetails[0]['d_group'] == $d_groupdata['u_id'])?'selected':''?> value="<?= $d_groupdata['u_id'] ?>"><?= $d_groupdata['u_name'] ?></option> 
-                          <?php } } ?>
-                        </select>
+                        <input type="text" name="d_name" id="d_name" class="form-control" placeholder="Nama Driver" value="<?php echo (isset($driverdetails)) ? $driverdetails[0]['d_name']:'' ?>" >
                       </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                       <div class="form-group">
-                        <label class="form-label">Mobile<span class="form-required">*</span></label>
-                        <input type="text" name="d_mobile" value="<?php echo (isset($driverdetails)) ? $driverdetails[0]['d_mobile']:'' ?>" class="form-control" placeholder="Mobile" >
+                        <label class="form-label">No Telepon<span class="form-required">*</span></label>
+                        <input type="text" name="d_mobile" value="<?php echo (isset($driverdetails)) ? $driverdetails[0]['d_mobile']:'' ?>" class="form-control" placeholder="No Telepon" >
                       </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                       <div class="form-group">
-                        <label class="form-label">Age<span class="form-required">*</span></label>
-                        <input type="text" name="d_age" value="<?php echo (isset($driverdetails)) ? $driverdetails[0]['d_age']:'' ?>" class="form-control" placeholder="Age" >
+                        <label class="form-label">Umur (Tahun)<span class="form-required">*</span></label>
+                        <input type="text" name="d_age" value="<?php echo (isset($driverdetails)) ? $driverdetails[0]['d_age']:'' ?>" class="form-control" placeholder="Umur (Tahun)" >
                       </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                       <div class="form-group">
-                        <label class="form-label">License No<span class="form-required">*</span></label>
-                        <input type="text" name="d_licenseno" value="<?php echo (isset($driverdetails)) ? $driverdetails[0]['d_licenseno']:'' ?>" class="form-control" placeholder="License No" >
+                        <label class="form-label">No SIM<span class="form-required">*</span></label>
+                        <input type="text" name="d_licenseno" value="<?php echo (isset($driverdetails)) ? $driverdetails[0]['d_licenseno']:'' ?>" class="form-control" placeholder="No SIM" >
                       </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                       <div class="form-group">
-                        <label class="form-label">License Expiry Date<span class="form-required">*</span></label>
-                        <input type="text" name="d_license_expdate" value="<?php echo (isset($driverdetails)) ? $driverdetails[0]['d_license_expdate']:'' ?>" class="form-control datepickerpastdisable" placeholder="License Expiry Date" >
+                        <label class="form-label">SIM Expired<span class="form-required">*</span></label>
+                        <input type="text" name="d_license_expdate" value="<?php echo (isset($driverdetails)) ? $driverdetails[0]['d_license_expdate']:'' ?>" class="form-control datepickerpastdisable" placeholder="SIM Expired" >
                       </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group">
-                        <label class="form-label">Total Experiance<span class="form-required">*</span></label>
-                        <input type="text" name="d_total_exp" value="<?php echo (isset($driverdetails)) ? $driverdetails[0]['d_total_exp']:'' ?>" class="form-control" placeholder="Total Experiance" >
+                        <label class="form-label">Pengalaman (Tahun)<span class="form-required">*</span></label>
+                        <input type="text" name="d_total_exp" value="<?php echo (isset($driverdetails)) ? $driverdetails[0]['d_total_exp']:'' ?>" class="form-control" placeholder="Pengalaman (Tahun)" >
                       </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group">
-                        <label class="form-label">Date of Joining<span class="form-required">*</span></label>
-                        <input type="text" name="d_doj" value="<?php echo (isset($driverdetails)) ? $driverdetails[0]['d_doj']:'' ?>" class="form-control datepicker" placeholder="Date of Joining" >
+                        <label class="form-label">Tanggal Bergabung<span class="form-required">*</span></label>
+                        <input type="text" name="d_doj" value="<?php echo (isset($driverdetails)) ? $driverdetails[0]['d_doj']:'' ?>" class="form-control datepicker" placeholder="Tanggal Bergabung" >
                       </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group">
-                        <label class="form-label">Reference/Notes</label>
-                        <input type="text" name="d_ref" value="<?php echo (isset($driverdetails)) ? $driverdetails[0]['d_ref']:'' ?>" class="form-control" placeholder="Reference or Notes" >
+                        <label class="form-label">Catatan/Referensi</label>
+                        <input type="text" name="d_ref" value="<?php echo (isset($driverdetails)) ? $driverdetails[0]['d_ref']:'' ?>" class="form-control" placeholder="Catatan/Referensi" >
                       </div>
                     </div>
                     <div class="col-sm-6 col-md-6">
                         <div class="form-group">
-                        <label class="form-label">Address<span class="form-required">*</span></label>
-                        <textarea class="form-control" autocomplete="off" placeholder="Address"  name="d_address"><?php echo (isset($driverdetails)) ? $driverdetails[0]['d_address']:'' ?></textarea>
+                        <label class="form-label">Alamat<span class="form-required">*</span></label>
+                        <textarea class="form-control" autocomplete="off" placeholder="Alamat"  name="d_address"><?php echo (isset($driverdetails)) ? $driverdetails[0]['d_address']:'' ?></textarea>
                         
                       </div>
                     </div>

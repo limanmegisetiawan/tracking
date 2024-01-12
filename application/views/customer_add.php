@@ -2,13 +2,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark"><?php echo (isset($customerdetails))?'Edit Customer':'Add Customer' ?>
+            <h1 class="m-0 text-dark"><?php echo (isset($customerdetails))?'Edit Customer':'Tambah Siswa' ?>
             </h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="<?= base_url(); ?>/dashboard">Customer</a></li>
-              <li class="breadcrumb-item active"><?php echo (isset($customerdetails))?'Edit Customer':'Add Customer' ?></li>
+              <li class="breadcrumb-item"><a href="<?= base_url(); ?>/dashboard">Data Siswa</a></li>
+              <li class="breadcrumb-item active"><?php echo (isset($customerdetails))?'Edit Siswa':'Tambah Siswa' ?></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -25,27 +25,27 @@
 
                     <div class="col-sm-6 col-md-3">
                       <div class="form-group">
-                          <label class="form-label">Name<span class="form-required">*</span></label>
-                          <input type="text" required="true" class="form-control" value="<?php echo (isset($customerdetails)) ? $customerdetails[0]['c_name']:'' ?>" id="c_name" name="c_name" placeholder="Customer Name">
+                          <label class="form-label">Nama<span class="form-required">*</span></label>
+                          <input type="text" required="true" class="form-control" value="<?php echo (isset($customerdetails)) ? $customerdetails[0]['c_name']:'' ?>" id="c_name" name="c_name" placeholder="Nama Siswa">
                       </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                       <div class="form-group">
-                         <label class="form-label">Mobile<span class="form-required">*</span></label>
-                          <input type="text" required="true" class="form-control" value="<?php echo (isset($customerdetails)) ? $customerdetails[0]['c_mobile']:'' ?>" id="c_mobile" name="c_mobile" placeholder="Customer Mobile">
+                         <label class="form-label">No Telepon<span class="form-required">*</span></label>
+                          <input type="text" required="true" class="form-control" value="<?php echo (isset($customerdetails)) ? $customerdetails[0]['c_mobile']:'' ?>" id="c_mobile" name="c_mobile" placeholder="No Telepon">
                       </div>
                     </div>
                     <div class="col-sm-6 col-md-4">
                       <div class="form-group">
                          <label class="form-label">Email</label>
-                          <input type="text" required="true" class="form-control" value="<?php echo (isset($customerdetails)) ? $customerdetails[0]['c_email']:'' ?>" id="c_email" name="c_email" placeholder="Customer Email">
+                          <input type="text" required="true" class="form-control" value="<?php echo (isset($customerdetails)) ? $customerdetails[0]['c_email']:'' ?>" id="c_email" name="c_email" placeholder="Email">
 
                       </div>
                     </div>
                      <?php if(isset($customerdetails[0]['c_isactive'])) { ?>
                     <div class="col-sm-6 col-md-2">
                       <div class="form-group">
-                          <label for="c_isactive" class="form-label">Customer Status</label>
+                          <label for="c_isactive" class="form-label">Status Siswa</label>
                         <select id="c_isactive" name="c_isactive" class="form-control " required="">
                           <option value="">Select Driver Status</option> 
                           <option <?php echo (isset($customerdetails) && $customerdetails[0]['c_isactive']==1) ? 'selected':'' ?> value="1">Active</option> 
@@ -57,8 +57,8 @@
 
                     <div class="col-sm-6 col-md-6">
                       <div class="form-group">
-                       <label class="form-label">Address<span class="form-required">*</span></label>
-                        <textarea class="form-control" required="true" id="c_address" autocomplete="off" placeholder="Address"  name="c_address"><?php echo (isset($customerdetails)) ? $customerdetails[0]['c_address']:'' ?></textarea>
+                       <label class="form-label">Alamat<span class="form-required">*</span></label>
+                        <textarea class="form-control" required="true" id="c_address" autocomplete="off" placeholder="Alamat"  name="c_address"><?php echo (isset($customerdetails)) ? $customerdetails[0]['c_address']:'' ?></textarea>
                       </div>
                     </div>
                    
@@ -70,7 +70,7 @@
   
       <div class="modal-footer">
 
-                  <button type="submit" class="btn btn-primary"> <?php echo (isset($customerdetails))?'Update Customer':'Add Customer' ?></button>
+                  <button type="submit" class="btn btn-primary"> <?php echo (isset($customerdetails))?'Update Siswa':'Tambah Data Siswa' ?></button>
       </div>
     </div>
     </form>

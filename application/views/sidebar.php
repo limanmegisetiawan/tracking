@@ -106,41 +106,13 @@
                    <?php } ?>
                </ul>
             </li>
-           
-            <li class="nav-item has-treeview <?php echo ((activate_menu('tracking'))=='active') ? 'menu-open':'' ?>
-               <?php echo ((activate_menu('livestatus'))=='active') ? 'menu-open':'' ?>">
-               <a href="#" class="nav-link <?php echo activate_menu('tracking');?> <?php echo activate_menu('livestatus');?>">
-                  <i class="nav-icon fa fa-map-pin"></i>
-                  <p>
-                     Tracking
-                     <i class="right fas fa-angle-left"></i>
-                  </p>
-               </a>
-               <ul class="nav nav-treeview">
-                 <?php  if(userpermission('lr_tracking')) { ?>
-                  <li class="nav-item">
-                     <a href="<?= base_url(); ?>tracking" class="nav-link <?php echo activate_menu('tracking');?>">
-                        <i class="nav-icon fas faa-list"></i>
-                        <p>History Tracking</p>
-                     </a>
-                  </li>
-                  <?php } if(userpermission('lr_liveloc')) { ?>
-                  <li class="nav-item">
-                     <a href="<?= base_url(); ?>tracking/livestatus" class="nav-link <?php echo activate_menu('livestatus');?>">
-                        <i class="nav-icon fas faa-plus"></i>
-                        <p>Lokasi Terkini</p>
-                     </a>
-                  </li>
-                  <?php } ?>
-               </ul>
-            </li>
              <?php }  if(userpermission('lr_geofence_add') || userpermission('lr_geofence_list') || userpermission('lr_geofence_events')) { ?>
             <li class="nav-item has-treeview <?php echo ((activate_menu('addgeofence'))=='active') ? 'menu-open':'' ?> <?php echo ((activate_menu('geofenceevents'))=='active') ? 'menu-open':'' ?>
                <?php echo ((activate_menu('geofence'))=='active') ? 'menu-open':'' ?>">
                <a href="#" class="nav-link <?php echo activate_menu('geofence');?> <?php echo activate_menu('addgeofence');?> <?php echo activate_menu('geofenceevents');?>">
-                  <i class="nav-icon fa fa-street-view"></i>
+                  <i class="nav-icon fa fa-map-pin"></i>
                   <p>
-                     Geofence
+                     Tracking
                      <i class="right fas fa-angle-left"></i>
                   </p>
                </a>
@@ -149,23 +121,10 @@
                   <li class="nav-item">
                      <a href="<?= base_url(); ?>geofence/addgeofence" class="nav-link <?php echo activate_menu('addgeofence');?>">
                         <i class="nav-icon fas faa-list"></i>
-                        <p>Tambah Geofence</p>
+                        <p>History Tracking</p>
                      </a>
                   </li>
-                  <?php } if(userpermission('lr_geofence_list')) { ?>
-                  <li class="nav-item">
-                     <a href="<?= base_url(); ?>geofence" class="nav-link <?php echo activate_menu('geofence');?>">
-                        <i class="nav-icon fas faa-plus"></i>
-                        <p>Manage Geofence</p>
-                     </a>
-                  </li>
-                  <?php } if(userpermission('lr_geofence_events')) { ?>
-                  <li class="nav-item">
-                     <a href="<?= base_url(); ?>geofence/geofenceevents" class="nav-link <?php echo activate_menu('geofenceevents');?>">
-                        <i class="nav-icon fas faa-plus"></i>
-                        <p>Geofence Events</p>
-                     </a>
-                  </li>
+                
                   <?php } ?>
                </ul>
             </li>

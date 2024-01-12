@@ -65,96 +65,27 @@
       <!-- /.row -->
       <!-- /.row -->
       <div class="row">
-         <!-- Left col -->
-         <div class="row col-md-12">
-            <?php if(userpermission('lr_ie_list')) { ?>
-           
-            <?php } if(userpermission('lr_reminder_list')) { ?>
-           
-         </div>
-         <?php } if(userpermission('lr_liveloc')) { ?>
-         <div class="col-sm-6 col-lg-6 ">
-            <div class="card ">
-               <div class="card-header">
-                  <h2 class="card-title">Lokasi Kendaraan Terkini</h2>
-               </div>
-               <table  class="datatable table card-table table-vcenter">
-                  <thead>
-                     <tr>
-                        <th>Nama</th>
-                        <th>Lokasi Terkini</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <?php if(!empty($vechicle_currentlocation)){  
-                        foreach($vechicle_currentlocation as $vech_details){
-                        ?>
-                     <tr>
-                        <td> <?php echo output($vech_details['v_name']); ?></td>
-                        <td>  <span class="badge badge-<?php echo ($vech_details['current_location']!='') ? 'success':'warning' ?>"><?php echo ($vech_details['current_location']!='') ?wordwrap($vech_details['current_location'], 60, "<br />\n") :'Location Not Updated' ?></span></td>
-                     </tr>
-                     <?php } } ?>
-                  </tbody>
-               </table>
-            </div>
-         </div>
-         <?php } if(userpermission('lr_vech_list')) { ?>
-         <div class="col-sm-6 col-lg-6 ">
-            <div class="card">
-               <div class="card-header">
-                  <h2 class="card-title">Status Kendaraan Berjalan</h2>
-               </div>
-               <table class="datatable table card-table">
-                  <thead>
-                     <tr>
-                        <th>Name</th>
-                        <th>Status</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <?php if(!empty($vechicle_status)){ foreach ($vechicle_status as $key => $vechicle_status_arr) {
-                        ?>
-                     <tr>
-                        <td><?php echo output($vechicle_status_arr['v_name']); ?></td>
-                        <td>
-                           <span class="badge badge-<?php echo ($vechicle_status_arr['t_trip_status']=='Completed') ? 'success':'danger' ?>"><?php echo ($vechicle_status_arr['t_trip_status']=='Completed') ? 'Idle':'In Trip' ?></span>
-                        </td>
-                     </tr>
-                     <?php  }   }  ?>
-               </table>
-            </div>
-         </div>
-         <?php } if(userpermission('lr_geofence_list')) { ?>
-         <div class="col-md-6">
-            <div class="col-sm-12 col-lg-12 ">
-               <div class="card">
-                  <div class="card-header">
-                     <h2 class="card-title">Status Geofence Kendaraan</h2>
-                  </div>
-                  <table class="datatable table card-table table-vcenter">
-                     <thead>
-                        <tr>
-                           <th>Kendaraan</th>
-                           <th>Event</th>
-                           <th>Waktu</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        <?php if(!empty($geofenceevents)){  
-                           foreach($geofenceevents as $geofence){
-                           ?>
-                        <tr>
-                           <td> <?php echo output($geofence['v_name']); ?></td>
-                           <td>  <?php if($geofence['ge_event']=='inside') { echo 'Moving '.output($geofence['ge_event']).' '.$geofence['geo_name']; } else {  echo 'Exiting '.output($geofence['ge_event']) .' ' .$geofence['geo_name']; } ?></td>
-                            <td> <?php echo output($geofence['ge_timestamp']); ?></td>
-                        </tr>
-                        <?php } } ?>
-                     </tbody>
-                  </table>
-               </div>
-            </div>
-         </div>
-         <?php } ?>
+        
+                <div id="map" style="width: 950px; height: 400px;"></div>
+                <script>
+                    const map = L
+                        .map('map')
+                        .setView([
+                            -6.931268, 107.615322
+                        ], 13);
+
+                    L
+                        .tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        
+                            maxZoom: 20,
+                            id: 'mapbox/streets-v11',
+                            tileSize: 512,
+                            zoomOffset: -1
+                        })
+                        .addTo(map);
+
+                    
+                </script>
       </div>
       <!-- /.card -->
       <!-- /.col -->
