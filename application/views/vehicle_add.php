@@ -246,6 +246,8 @@
                                         .getElementById('latlong_end')
                                         .value = secondClickLatLng.lat + ', ' + secondClickLatLng.lng;
 
+                                    // Pindahkan marker pertama ke posisi terbaru
+                                    markers[0].setLatLng(e.latlng);
                                 }
                             }
                         }

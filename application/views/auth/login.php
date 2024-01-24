@@ -28,10 +28,20 @@
         <link
             rel="stylesheet"
             href="<?= base_url(); ?>assets/plugins/datepicker/bootstrap-datepicker.min.css">
-             <link rel="stylesheet" href="<?= base_url()?>leaflet/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-<script src="<?= base_url()?>leaflet/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<link rel="stylesheet" href="<?= base_url()?>leaflet-routing-machine/dist/leaflet-routing-machine.css" />
-<script src="<?= base_url()?>leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+        <link
+            rel="stylesheet"
+            href="<?= base_url()?>leaflet/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+            crossorigin=""/>
+        <script
+            src="<?= base_url()?>leaflet/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+        <link
+            rel="stylesheet"
+            href="<?= base_url()?>leaflet-routing-machine/dist/leaflet-routing-machine.css"/>
+        <script
+            src="<?= base_url()?>leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 
     </head>
     <body >
@@ -244,8 +254,10 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <form id="track" method="post">
-                        <div clas="row">
+
+                    <form id="track" action="<?= base_url() ?>" method="GET">
+
+                        <div class="row">
                             <div class="card-body">
                                 <div class="row col-md-12">
 
@@ -255,93 +267,105 @@
                                                 id="t_vechicle"
                                                 required="true"
                                                 class="form-control selectized"
-                                                name="t_vechicle">
+                                                name="t_vechicle"
+                                                onchange="loadMap()">
                                                 <option value="">Pilih Bus</option>
-                                                <?php  foreach ($vechiclelist as $key => $vechiclelists) { ?>
-                                                <option value="<?php echo output($vechiclelists['v_id']) ?>"><?php echo output($vechiclelists['v_name']).' - '. output($vechiclelists['v_registration_no']); ?></option>
-                                                <?php  } ?>
+                                                <?php foreach ($vechiclelist as $key => $vechiclelists) { ?>
+                                                <option
+                                                    value="<?php echo output($vechiclelists['v_id']) ?>"
+                                                    data-latlong-start="<?php echo output($vechiclelists['latlong_start']) ?>"
+                                                    data-latlong-end="<?php echo output($vechiclelists['latlong_end']) ?>"><?php echo output($vechiclelists['v_name']) ?></option>
+                                                <?php } ?>
                                             </select>
-
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-primary">Load</button>
+                                            <!-- <button type="button" class="btn btn-primary"
+                                            onclick="loadMap()">Load</button> -->
                                         </div>
-
                                     </div>
 
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div id="map" style="width: 750px; height: 400px;"></div>
+                                            <div id="map4" style="width: 750px; height: 400px;"></div>
+                                            <!-- Your existing HTML code -->
+
                                             <script>
-                                                const map = L
-                                                    .map('map')
+                                                const map4 = L
+                                                    .map('map4')
                                                     .setView([
                                                         -6.931268, 107.615322
                                                     ], 13);
 
                                                 L
                                                     .tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                                                        
+                                                        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> con' +
+                                                                'tributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA<' +
+                                                                '/a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
                                                         maxZoom: 20,
                                                         id: 'mapbox/streets-v11',
                                                         tileSize: 512,
                                                         zoomOffset: -1
                                                     })
-                                                    .addTo(map);
+                                                    .addTo(map4);
 
-                                                // Variabel untuk menyimpan marker
-                                                var markers = [];
-                                                // Inisialisasi objek routing
-                                                var control = L
-                                                    .Routing
-                                                    .control({routeWhileDragging: true})
-                                                    .addTo(map);
+                                                let routingControl; // Variable to store the routing control
 
-                                                // Variabel untuk menyimpan koordinat klik pertama dan kedua
-                                                var firstClickLatLng = null;
+                                                function loadMap() {
+                                                    // Dapatkan nilai yang dipilih dari dropdown
+                                                    const select = document.getElementById('t_vechicle');
+                                                    const selectedIndex = select.selectedIndex;
 
-                                                // Inisialisasi objek routing
+                                                    // Periksa apakah kendaraan sudah dipilih
+                                                    if (selectedIndex >= 0) {
+                                                        const latlongStart = select
+                                                            .options[selectedIndex]
+                                                            .getAttribute('data-latlong-start');
+                                                        const latlongEnd = select
+                                                            .options[selectedIndex]
+                                                            .getAttribute('data-latlong-end');
 
-                                                function onMapClick(e) {
-                                                    if (markers.length < 2) {
-                                                        var marker = L
-                                                            .marker(e.latlng)
-                                                            .addTo(map);
-                                                        markers.push(marker);
+                                                        // Menghapus marker dan polyline yang ada di peta
+                                                        map4.eachLayer((layer) => {
+                                                            if (layer instanceof L.Marker || layer instanceof L.Polyline) {
+                                                                map4.removeLayer(layer);
+                                                            }
+                                                        });
 
-                                                        if (markers.length === 1) {
-                                                            // Jika ini klik pertama, simpan koordinatnya dan tambahkan sebagai titik awal
-                                                            // pada routing
-                                                            firstClickLatLng = e.latlng;
-
-                                                            control.spliceWaypoints(0, 1, e.latlng);
-                                                            marker
-                                                                .bindPopup("Lokasi awal: " + e.latlng.toString())
-                                                                .openPopup();
-                                                            document
-                                                                .getElementById('latlong_start')
-                                                                .value = firstClickLatLng.lat + ', ' + firstClickLatLng.lng;
-
-                                                        } else {
-                                                            // Jika ini klik kedua, simpan koordinatnya dan tambahkan sebagai titik akhir
-                                                            // pada routing
-                                                            var secondClickLatLng = e.latlng;
-
-                                                            control.spliceWaypoints(control.getWaypoints().length - 1, 1, e.latlng);
-                                                            marker
-                                                                .bindPopup("Lokasi akhir: " + e.latlng.toString())
-                                                                .openPopup();
-                                                            document
-                                                                .getElementById('latlong_end')
-                                                                .value = secondClickLatLng.lat + ', ' + secondClickLatLng.lng;
-
+                                                        // Hapus routing control jika sudah ada
+                                                        if (routingControl) {
+                                                            map4.removeControl(routingControl);
                                                         }
+
+                                                        // Menambahkan marker pada peta berdasarkan latlong_start dan latlong_end
+                                                        const startMarker = L
+                                                            .marker(latlongStart.split(','))
+                                                            .addTo(map4)
+                                                            .bindPopup('Lokasi Awal')
+                                                            .openPopup();
+                                                        const endMarker = L
+                                                            .marker(latlongEnd.split(','))
+                                                            .addTo(map4);
+
+                                                        // Menambahkan kontrol routing dengan waypoints dinamis
+                                                        routingControl = L
+                                                            .Routing
+                                                            .control({
+                                                                waypoints: [
+                                                                    L.latLng(latlongStart.split(',')),
+                                                                    L.latLng(latlongEnd.split(','))
+                                                                ]
+                                                            })
+                                                            .addTo(map4);
+
+                                                        // Menyesuaikan tampilan peta agar memuat kedua marker
+                                                        map4.fitBounds([startMarker.getLatLng(), endMarker.getLatLng()]);
+                                                    } else {
+                                                        // Tangani kasus di mana tidak ada kendaraan yang dipilih
+                                                        console.error('Tidak ada kendaraan yang dipilih.');
                                                     }
                                                 }
-
-                                                map.on('click', onMapClick);
                                             </script>
 
                                         </div>
@@ -353,6 +377,7 @@
                         </div>
 
                     </form>
+
                 </div>
                 <div class="col-md-6">
                     <div class="tb_bus">

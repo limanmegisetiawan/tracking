@@ -56,19 +56,19 @@ class Geofence extends CI_Controller {
 		$data['vehicles'] = $this->vehicle_model->getall_vehicle();
 		$this->template->template_render('geofence_add',$data);
 	}
-	public function geofence_get()
-	{
-		$geo_id = $_POST['id'];
-		$geofence = $this->geofence_model->get_geofence($geo_id);
-		if(isset($geofence[0]['geo_id'])) {
-			$lastgeo = explode(" ,",$geofence[0]['geo_area']);
-			$geofenceval = $geofence[0]['geo_area'].$lastgeo[0];
-			$geo_area = array_filter(explode(" , ",$geofenceval));
-			echo json_encode($geo_area);
-		} else {
-			echo 'false';
-		}
-	}
+	// public function geofence_get()
+	// {
+	// 	$geo_id = $_POST['id'];
+	// 	$geofence = $this->geofence_model->get_geofence($geo_id);
+	// 	if(isset($geofence[0]['geo_id'])) {
+	// 		$lastgeo = explode(" ,",$geofence[0]['geo_area']);
+	// 		$geofenceval = $geofence[0]['geo_area'].$lastgeo[0];
+	// 		$geo_area = array_filter(explode(" , ",$geofenceval));
+	// 		echo json_encode($geo_area);
+	// 	} else {
+	// 		echo 'false';
+	// 	}
+	// }
 	public function geofencedelete()
 	{
 		$g_id = $this->uri->segment(3);

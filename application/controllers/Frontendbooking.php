@@ -125,5 +125,16 @@ class Frontendbooking extends CI_Controller {
 			$email = $this->email_model->sendemail($data['bookingemail'],$gettemplate[0]['et_subject'],$body);
 		}
 	}
+
+	public function tracking() {
+    $t_vechicle = $this->input->get('t_vechicle');
+
+    // Lakukan pengolahan data dan tampilan di sini
+
+    // Contoh: Mengirimkan data ke tampilan
+    $data['t_vechicle'] = $t_vechicle;
+    $this->load->view('nama_tampilan', $data);
+}
+
 	
 }

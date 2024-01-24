@@ -66,10 +66,10 @@
       <!-- /.row -->
       <div class="row">
         
-                <div id="map" style="width: 950px; height: 400px;"></div>
+                <div id="map3" style="width: 950px; height: 400px;"></div>
                 <script>
-                    const map = L
-                        .map('map')
+                    const map3 = L
+                        .map('map3')
                         .setView([
                             -6.931268, 107.615322
                         ], 13);
@@ -82,7 +82,7 @@
                             tileSize: 512,
                             zoomOffset: -1
                         })
-                        .addTo(map);
+                        .addTo(map3);
 
                     
                 </script>

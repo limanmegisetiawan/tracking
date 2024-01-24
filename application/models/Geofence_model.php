@@ -3,7 +3,7 @@
 class Geofence_model extends CI_Model{
 	
 	public function add_geofence($data) { 
-		$insertdata = array('geo_name'=>$data['geo_name'],'geo_description'=>$data['geo_description'],'geo_area'=>$data['geo_area'],'geo_vehicles'=>implode(',', $data['geo_vehicles']));
+		$insertdata = array('geo_name'=>$data['geo_name'],'geo_description'=>$data['geo_description'],'v_id'=>$data['v_id'],'v_name'=>$data['v_name'],'geo_area'=>$data['geo_area'],'geo_vehicles'=>implode(',', $data['geo_vehicles']));
 
 		return	$this->db->insert('geofences',$insertdata);
 	} 

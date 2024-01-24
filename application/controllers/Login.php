@@ -63,6 +63,17 @@ class Login extends CI_Controller {
 			}
 		}
 	}
+
+	public function loadData() {
+    // Lakukan logika pemrosesan data kendaraan di sini
+
+    // Misalnya, panggil model atau layanan untuk mendapatkan data kendaraan
+    $vehicleData = $this->vehicleModel->getData();
+
+    // Kirim data sebagai respons JSON
+    return $this->jsonResponse($vehicleData);
+}
+
 	//To logout session from browser
 	public function logout() {
 		// Removing session data
@@ -70,6 +81,6 @@ class Login extends CI_Controller {
 		$this->session->unset_userdata('session_data', $sess_array);
 		$this->session->unset_userdata('userroles', array());
 		$this->session->set_flashdata('successmessage', 'Successfully Logged out !');
-		redirect('login');
+		redirect('Frontendbooking');
 	}
 }

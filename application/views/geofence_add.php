@@ -41,106 +41,111 @@
 </div>
 <section class="content">
     <div class="container-fluid">
-        <form id="track" method="post">
+        <form id="track" action="<?= base_url() ?>" method="GET">
 
-            <div class="card-body">
-                <div class="row col-md-12">
+            <div class="row">
+                <div class="card-body">
+                    <div class="row col-md-12">
 
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <select
-                                id="t_vechicle"
-                                required="true"
-                                class="form-control selectized"
-                                name="t_vechicle">
-                                <option value="">Pilih Bus</option>
-                                <?php  foreach ($vechiclelist as $key => $vechiclelists) { ?>
-                                <option value="<?php echo output($vechiclelists['v_id']) ?>"><?php echo output($vechiclelists['v_name']).' - '. output($vechiclelists['v_registration_no']); ?></option>
-                                <?php  } ?>
-                            </select>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <select id="t_vechicle" required="true" class="form-control" name="t_vechicle">
+                                    <option value="">Pilih Bus</option>
+                                    <?php foreach ($vehicles as $key => $vechiclelists) { ?>
+                                    <option
+                                        value="<?php echo output($vechiclelists['v_id']) ?>"
+                                        data-latlong-start="<?php echo output($vechiclelists['latlong_start']) ?>"
+                                        data-latlong-end="<?php echo output($vechiclelists['latlong_end']) ?>"><?php echo output($vechiclelists['v_name']) . ' - ' . output($vechiclelists['v_registration_no']); ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Load</button>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary" onclick="loadMap()">Load</button>
+                            </div>
                         </div>
+
                     </div>
 
-                </div>
+                    <div id="map2" style="width: 900px; height: 400px;"></div>
+                    <script>
+                        const map2 = L
+                            .map('map2')
+                            .setView([
+                                -6.931268, 107.615322
+                            ], 13);
 
-                <div id="map" style="width: 900px; height: 400px;"></div>
-                <script>
-                    const map = L
-                        .map('map')
-                        .setView([
-                            -6.931268, 107.615322
-                        ], 13);
+                        L
+                            .tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> con' +
+                                        'tributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA<' +
+                                        '/a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                                maxZoom: 20,
+                                id: 'mapbox/streets-v11',
+                                tileSize: 512,
+                                zoomOffset: -1
+                            })
+                            .addTo(map2);
 
-                    L
-                        .tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> con' +
-                                    'tributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA<' +
-                                    '/a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                            maxZoom: 20,
-                            id: 'mapbox/streets-v11',
-                            tileSize: 512,
-                            zoomOffset: -1
-                        })
-                        .addTo(map);
+                        let routingControl; // Variable to store the routing control
 
-                    // Variabel untuk menyimpan marker
-                    var markers = [];
-                    // Inisialisasi objek routing
-                    var control = L
-                        .Routing
-                        .control({routeWhileDragging: true})
-                        .addTo(map);
+                        function loadMap() {
+                            // Dapatkan nilai yang dipilih dari dropdown
+                            const select = document.getElementById('t_vechicle');
+                            const selectedIndex = select.selectedIndex;
 
-                    // Variabel untuk menyimpan koordinat klik pertama dan kedua
-                    var firstClickLatLng = null;
+                            // Periksa apakah kendaraan sudah dipilih
+                            if (selectedIndex >= 0) {
+                                const latlongStart = select
+                                    .options[selectedIndex]
+                                    .getAttribute('data-latlong-start');
+                                const latlongEnd = select
+                                    .options[selectedIndex]
+                                    .getAttribute('data-latlong-end');
 
-                    // Inisialisasi objek routing
+                                // Menghapus marker dan polyline yang ada di peta
+                                map2.eachLayer((layer) => {
+                                    if (layer instanceof L.Marker || layer instanceof L.Polyline) {
+                                        map2.removeLayer(layer);
+                                    }
+                                });
 
-                    function onMapClick(e) {
-                        if (markers.length < 2) {
-                            var marker = L
-                                .marker(e.latlng)
-                                .addTo(map);
-                            markers.push(marker);
+                                // Hapus routing control jika sudah ada
+                                if (routingControl) {
+                                    map2.removeControl(routingControl);
+                                }
 
-                            if (markers.length === 1) {
-                                // Jika ini klik pertama, simpan koordinatnya dan tambahkan sebagai titik awal
-                                // pada routing
-                                firstClickLatLng = e.latlng;
+                                // Menambahkan marker pada peta berdasarkan latlong_start dan latlong_end
+                                const startMarker = L
+                                    .marker(latlongStart.split(','))
+                                    .addTo(map2);
+                                const endMarker = L
+                                    .marker(latlongEnd.split(','))
+                                    .addTo(map2);
 
-                                control.spliceWaypoints(0, 1, e.latlng);
-                                marker
-                                    .bindPopup("Lokasi awal: " + e.latlng.toString())
-                                    .openPopup();
-                                document
-                                    .getElementById('latlong_start')
-                                    .value = firstClickLatLng.lat + ', ' + firstClickLatLng.lng;
+                                // Menambahkan kontrol routing dengan waypoints dinamis
+                                routingControl = L
+                                    .Routing
+                                    .control({
+                                        waypoints: [
+                                            L.latLng(latlongStart.split(',')),
+                                            L.latLng(latlongEnd.split(','))
+                                        ]
+                                    })
+                                    .addTo(map2);
 
+                                // Menyesuaikan tampilan peta agar memuat kedua marker
+                                map2.fitBounds([startMarker.getLatLng(), endMarker.getLatLng()]);
                             } else {
-                                // Jika ini klik kedua, simpan koordinatnya dan tambahkan sebagai titik akhir
-                                // pada routing
-                                var secondClickLatLng = e.latlng;
-
-                                control.spliceWaypoints(control.getWaypoints().length - 1, 1, e.latlng);
-                                marker
-                                    .bindPopup("Lokasi akhir: " + e.latlng.toString())
-                                    .openPopup();
-                                document
-                                    .getElementById('latlong_end')
-                                    .value = secondClickLatLng.lat + ', ' + secondClickLatLng.lng;
-
+                                // Tangani kasus di mana tidak ada kendaraan yang dipilih
+                                console.error('Tidak ada kendaraan yang dipilih.');
                             }
                         }
-                    }
-
-                    map.on('click', onMapClick);
-                </script>
+                    </script>
+                </div>
             </div>
+
         </form>
 
     </div>
