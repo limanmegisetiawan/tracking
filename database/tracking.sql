@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 29, 2023 at 04:57 PM
+-- Generation Time: Jan 24, 2024 at 05:11 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.4.15
 
@@ -139,6 +139,13 @@ CREATE TABLE `geofences` (
   `geo_createddate` datetime NOT NULL DEFAULT current_timestamp(),
   `geo_modifieddate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `geofences`
+--
+
+INSERT INTO `geofences` (`geo_id`, `geo_name`, `geo_description`, `geo_area`, `geo_vehicles`, `geo_createddate`, `geo_modifieddate`) VALUES
+(1, 'indonesia', 'wilayah indonesia', 'area indonesia', 'Mitsubishi mirage', '2023-12-28 17:17:54', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -422,6 +429,8 @@ CREATE TABLE `vehicles` (
   `v_mileageperlitre` varchar(100) NOT NULL,
   `v_is_active` int(10) NOT NULL DEFAULT 1,
   `v_group` int(11) NOT NULL,
+  `latlong_start` varchar(50) NOT NULL,
+  `latlong_end` varchar(50) NOT NULL,
   `v_api_url` varchar(100) NOT NULL,
   `v_api_username` varchar(100) NOT NULL,
   `v_api_password` varchar(100) NOT NULL,
@@ -434,9 +443,9 @@ CREATE TABLE `vehicles` (
 -- Dumping data for table `vehicles`
 --
 
-INSERT INTO `vehicles` (`v_id`, `v_registration_no`, `v_name`, `v_model`, `v_chassis_no`, `v_engine_no`, `v_manufactured_by`, `v_type`, `v_color`, `v_mileageperlitre`, `v_is_active`, `v_group`, `v_api_url`, `v_api_username`, `v_api_password`, `v_created_by`, `v_created_date`, `v_modified_date`) VALUES
-(1, '1122', 'Mitsubishi Mirage', 'Mirage', '20001', '43719', 'Mitsubishi', 'BUS', '#F399EB', '', 1, 1, 'http://localhost/tracking/api', '1122', '632947', '1', '2023-12-27 03:32:31', '2023-12-27 02:33:31'),
-(2, '123', 'tayo', 'tayo', '234', '3452', 'tayo', 'Mini Bus', '#F399EB', '', 1, 1, 'http://localhost/tracking/api', '123', '943758', '1', '2023-12-27 04:36:10', '2023-12-27 03:36:46');
+INSERT INTO `vehicles` (`v_id`, `v_registration_no`, `v_name`, `v_model`, `v_chassis_no`, `v_engine_no`, `v_manufactured_by`, `v_type`, `v_color`, `v_mileageperlitre`, `v_is_active`, `v_group`, `latlong_start`, `latlong_end`, `v_api_url`, `v_api_username`, `v_api_password`, `v_created_by`, `v_created_date`, `v_modified_date`) VALUES
+(3, '12345', 'minibus', 'mini', '232', '24241', '222', 'Mini Bus', '#F399EB', '', 1, 1, '-6.920764275095495, 107.58573531755249', '-6.924683702787686, 107.60908126481812', 'http://localhost/tracking/api', '12345', '568431', '1', '2024-01-09 05:45:40', '2024-01-09 04:46:15'),
+(6, '123456', 'bebas', 'bebas', '123', '1234', 'bandung', 'Mini Bus', '#F399EB', '', 1, 1, '-6.931160846919546, 107.61562679110828', '-6.921054609898354, 107.60774041817643', 'http://localhost/tracking/api', '123456', '581397', '1', '2024-01-12 05:18:38', '2024-01-20 17:36:27');
 
 -- --------------------------------------------------------
 
@@ -597,7 +606,7 @@ ALTER TABLE `fuel`
 -- AUTO_INCREMENT for table `geofences`
 --
 ALTER TABLE `geofences`
-  MODIFY `geo_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `geo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `geofence_events`
@@ -663,7 +672,7 @@ ALTER TABLE `trip_payments`
 -- AUTO_INCREMENT for table `vehicles`
 --
 ALTER TABLE `vehicles`
-  MODIFY `v_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `v_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `vehicle_group`

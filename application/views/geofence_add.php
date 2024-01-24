@@ -1,22 +1,5 @@
-<?php $successMessage = $this->session->flashdata('successmessage');  
-           $warningmessage = $this->session->flashdata('warningmessage');                    
-      if (isset($successMessage)) { 
-        echo '<div id="alertmessage" class="col-md-5">
-          <div class="alert alert-success alert-dismissible">
-                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                   '. output($successMessage).'
-                  </div>
-          </div>'; } 
-      if (isset($warningmessage)) { echo '<div id="alertmessage" class="col-md-5">
-          <div class="alert alert-warning alert-dismissible">
-                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                   '. output($warningmessage).'
-                  </div>
-          </div>'; }    
-      ?>
 
 <div class="card-header">
-    <div style="display: none" id="color-palette"></div>
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
@@ -49,20 +32,20 @@
 
                         <div class="col-md-5">
                             <div class="form-group">
-                                <select id="t_vechicle" required="true" class="form-control" name="t_vechicle">
+                                <select
+                                    id="t_vechicle"
+                                    required="true"
+                                    class="form-control"
+                                    name="t_vechicle"
+                                    onchange="loadMap()">
                                     <option value="">Pilih Bus</option>
                                     <?php foreach ($vehicles as $key => $vechiclelists) { ?>
                                     <option
                                         value="<?php echo output($vechiclelists['v_id']) ?>"
                                         data-latlong-start="<?php echo output($vechiclelists['latlong_start']) ?>"
-                                        data-latlong-end="<?php echo output($vechiclelists['latlong_end']) ?>"><?php echo output($vechiclelists['v_name']) . ' - ' . output($vechiclelists['v_registration_no']); ?></option>
+                                        data-latlong-end="<?php echo output($vechiclelists['latlong_end']) ?>"><?php echo output($vechiclelists['v_name'])?></option>
                                     <?php } ?>
                                 </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <button type="button" class="btn btn-primary" onclick="loadMap()">Load</button>
                             </div>
                         </div>
 
@@ -88,6 +71,7 @@
                             })
                             .addTo(map2);
 
+                            
                         let routingControl; // Variable to store the routing control
 
                         function loadMap() {
@@ -119,7 +103,9 @@
                                 // Menambahkan marker pada peta berdasarkan latlong_start dan latlong_end
                                 const startMarker = L
                                     .marker(latlongStart.split(','))
-                                    .addTo(map2);
+                                    .addTo(map2)
+                                    .bindPopup('Lokasi Awal')
+                                    .openPopup();
                                 const endMarker = L
                                     .marker(latlongEnd.split(','))
                                     .addTo(map2);
